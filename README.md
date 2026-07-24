@@ -6,7 +6,7 @@ A robust, AI-powered CLI tool to review Python code for security, performance, a
 
 ## Project Structure
 - `src/main.py`: The Command Line Interface.
-- `src/api.py`: The FastAPI Web Server.
+- `src/app.py`: The Streamlit Web Dashboard.
 - `tests/`: Unit and integration tests.
 - `requirements.txt`: Project dependencies.
 - `setup.py`: Script to install the tool globally.
@@ -56,12 +56,6 @@ You can use the `--output` or `-o` flag to save the beautifully formatted Markdo
 ```bash
 ai-reviewer path/to/script.py --output report.md
 ```
-
-## Web API (FastAPI)
-
-This project includes a REST API with a built-in web interface!
-1. Start the server: `uvicorn src.api:app --reload`
-2. Open your web browser to: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ## Web Dashboard (Streamlit)
 
