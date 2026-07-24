@@ -1,5 +1,5 @@
 import os
-import google.generativeai as genai
+from google import genai
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,8 +10,8 @@ class CodeReviewer:
         if not api_key:
             raise ValueError("GEMINI_API_KEY is missing from environment variables.")
         
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        self.client = genai.Client(api_key=api_key)
+        self.model_name = 'gemini-2.0-flash'
         
     def review_code(self, file_content: str, filename: str) -> str:
         """
@@ -35,7 +35,10 @@ class CodeReviewer:
         """
         
         try:
-            response = self.model.generate_content(prompt)
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt
+            )
             return response.text
         except Exception as e:
             return f"Error connecting to Gemini API: {e}"
