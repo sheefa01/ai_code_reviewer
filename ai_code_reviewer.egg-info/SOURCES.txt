@@ -1,0 +1,17 @@
+README.md
+setup.py
+ai_code_reviewer.egg-info/PKG-INFO
+ai_code_reviewer.egg-info/SOURCES.txt
+ai_code_reviewer.egg-info/dependency_links.txt
+ai_code_reviewer.egg-info/entry_points.txt
+ai_code_reviewer.egg-info/requires.txt
+ai_code_reviewer.egg-info/top_level.txt
+src/__init__.py
+src/main.py
+src/ai/__init__.py
+src/ai/reviewer.py
+src/utils/__init__.py
+src/utils/file_parser.py
+tests/__init__.py
+tests/test_file_parser.py
+tests/test_reviewer.py
