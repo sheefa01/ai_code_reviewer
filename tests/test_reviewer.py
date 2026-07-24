@@ -8,7 +8,7 @@ from src.ai.reviewer import CodeReviewer
 def test_reviewer_initialization_success(mock_groq):
     reviewer = CodeReviewer()
     mock_groq.assert_called_once_with(api_key="test_key")
-    assert reviewer.model_name == 'llama3-8b-8192'
+    assert reviewer.model_name == 'llama-3.1-8b-instant'
 
 @patch.dict(os.environ, {}, clear=True)
 def test_reviewer_initialization_failure():

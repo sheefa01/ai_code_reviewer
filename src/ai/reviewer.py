@@ -11,7 +11,7 @@ class CodeReviewer:
             raise ValueError("GROQ_API_KEY is missing from environment variables.")
         
         self.client = Groq(api_key=api_key)
-        self.model_name = 'llama3-8b-8192'
+        self.model_name = 'llama-3.1-8b-instant'
         
     def review_code(self, file_content: str, filename: str) -> str:
         """
