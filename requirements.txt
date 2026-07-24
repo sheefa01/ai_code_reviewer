@@ -1,3 +1,6 @@
-# CLI Framework (e.g., typer or click - to be used in Milestone 2)
+# CLI Framework
+typer>=0.9.0
+rich>=13.0.0
+
 # AI SDK (e.g., google-generativeai or openai - to be used in Milestone 3)
 pytest>=7.0.0
