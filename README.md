@@ -5,7 +5,8 @@
 A robust, AI-powered CLI tool to review Python code for security, performance, and best practices.
 
 ## Project Structure
-- `src/`: Main source code (CLI, AI integration, file parsing).
+- `src/main.py`: The Command Line Interface.
+- `src/api.py`: The FastAPI Web Server.
 - `tests/`: Unit and integration tests.
 - `requirements.txt`: Project dependencies.
 - `setup.py`: Script to install the tool globally.
@@ -55,3 +56,17 @@ You can use the `--output` or `-o` flag to save the beautifully formatted Markdo
 ```bash
 ai-reviewer path/to/script.py --output report.md
 ```
+
+## Web API (FastAPI)
+
+This project also includes a production-ready REST API with a built-in web interface!
+
+1. Start the server:
+   ```bash
+   uvicorn src.api:app --reload
+   ```
+
+2. Open your web browser and navigate to:
+   [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+3. You will see a beautiful interactive interface. Click on the **`POST /review`** endpoint, click **"Try it out"**, upload any Python file, and click **"Execute"** to get a real-time AI review!
