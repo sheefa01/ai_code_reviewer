@@ -2,13 +2,16 @@ import typer
 from rich.console import Console
 from src.utils.file_parser import parse_python_files, check_syntax
 
+from src.ai.reviewer import CodeReviewer
+import os
+
 app = typer.Typer(help="AI-Powered Python Code Reviewer")
 console = Console()
 
 @app.command()
 def review(path: str = typer.Argument(..., help="Path to a Python file or directory to review")):
     """
-    Review Python files in the given path.
+    Review Python files in the given path using Google Gemini.
     """
     console.print(f"[bold blue]Starting review for:[/bold blue] {path}")
     
@@ -32,11 +35,27 @@ def review(path: str = typer.Argument(..., help="Path to a Python file or direct
         else:
             valid_files.append(file)
             
+    if not valid_files:
+        console.print("[red]No valid Python files to review.[/red]")
+        raise typer.Exit(code=1)
+
     console.print(f"[bold green]Syntax check complete.[/bold green] {len(valid_files)} file(s) ready for AI review.")
     
-    # Placeholder for Milestone 3 AI integration
-    if valid_files:
-        console.print("\n[dim]AI review logic will be implemented in Milestone 3...[/dim]")
+    try:
+        reviewer = CodeReviewer()
+    except ValueError as e:
+        console.print(f"[bold red]Configuration Error:[/bold red] {e}")
+        console.print("Please copy [bold].env.example[/bold] to [bold].env[/bold] and add your API key.")
+        raise typer.Exit(code=1)
+
+    for file in valid_files:
+        console.print(f"\n[bold magenta]--- Reviewing {file.name} ---[/bold magenta]")
+        content = file.read_text(encoding="utf-8")
+        
+        with console.status(f"Generating review for {file.name}..."):
+            feedback = reviewer.review_code(content, file.name)
+            
+        console.print(feedback)
 
 if __name__ == "__main__":
     app()
