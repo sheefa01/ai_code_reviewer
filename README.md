@@ -59,14 +59,16 @@ ai-reviewer path/to/script.py --output report.md
 
 ## Web API (FastAPI)
 
-This project also includes a production-ready REST API with a built-in web interface!
+This project includes a REST API with a built-in web interface!
+1. Start the server: `uvicorn src.api:app --reload`
+2. Open your web browser to: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
-1. Start the server:
+## Web Dashboard (Streamlit)
+
+This project also includes a stunning, premium Web Dashboard with a drag-and-drop file uploader!
+
+1. Start the dashboard:
    ```bash
-   uvicorn src.api:app --reload
+   python -m streamlit run src/app.py
    ```
-
-2. Open your web browser and navigate to:
-   [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-
-3. You will see a beautiful interactive interface. Click on the **`POST /review`** endpoint, click **"Try it out"**, upload any Python file, and click **"Execute"** to get a real-time AI review!
+2. Your browser will automatically open to `http://localhost:8501`.
