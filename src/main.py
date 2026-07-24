@@ -45,7 +45,7 @@ def review(path: str = typer.Argument(..., help="Path to a Python file or direct
         reviewer = CodeReviewer()
     except ValueError as e:
         console.print(f"[bold red]Configuration Error:[/bold red] {e}")
-        console.print("Please copy [bold].env.example[/bold] to [bold].env[/bold] and add your API key.")
+        console.print("Please copy [bold].env.example[/bold] to [bold].env[/bold] and add your GROQ API key.")
         raise typer.Exit(code=1)
 
     for file in valid_files:

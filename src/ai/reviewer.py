@@ -1,21 +1,21 @@
 import os
-from google import genai
+from groq import Groq
 from dotenv import load_dotenv
 
 load_dotenv()
 
 class CodeReviewer:
     def __init__(self):
-        api_key = os.getenv("GEMINI_API_KEY")
+        api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
-            raise ValueError("GEMINI_API_KEY is missing from environment variables.")
+            raise ValueError("GROQ_API_KEY is missing from environment variables.")
         
-        self.client = genai.Client(api_key=api_key)
-        self.model_name = 'gemini-2.0-flash'
+        self.client = Groq(api_key=api_key)
+        self.model_name = 'llama3-8b-8192'
         
     def review_code(self, file_content: str, filename: str) -> str:
         """
-        Sends the code to Gemini and returns the review.
+        Sends the code to Groq (Llama 3) and returns the review.
         """
         prompt = f"""
         You are a Senior Python Developer. Review the following code in '{filename}'.
@@ -35,10 +35,15 @@ class CodeReviewer:
         """
         
         try:
-            response = self.client.models.generate_content(
+            chat_completion = self.client.chat.completions.create(
+                messages=[
+                    {
+                        "role": "user",
+                        "content": prompt,
+                    }
+                ],
                 model=self.model_name,
-                contents=prompt
             )
-            return response.text
+            return chat_completion.choices[0].message.content
         except Exception as e:
-            return f"Error connecting to Gemini API: {e}"
+            return f"Error connecting to Groq API: {e}"
