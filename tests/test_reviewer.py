@@ -36,3 +36,24 @@ def test_review_code_success(mock_groq):
     called_prompt = called_messages[0]['content']
     assert "test.py" in called_prompt
     assert "print('hello')" in called_prompt
+
+def test_main_cli_output_flag(tmp_path):
+    from typer.testing import CliRunner
+    from src.main import app
+    
+    runner = CliRunner()
+    test_file = tmp_path / "test.py"
+    test_file.write_text("print('hello')", encoding="utf-8")
+    
+    out_file = tmp_path / "report.md"
+    
+    with patch("src.main.CodeReviewer") as mock_reviewer_class:
+        mock_reviewer_instance = MagicMock()
+        mock_reviewer_instance.review_code.return_value = "Mocked review output"
+        mock_reviewer_class.return_value = mock_reviewer_instance
+        
+        result = runner.invoke(app, [str(test_file), "--output", str(out_file)])
+        
+        assert result.exit_code == 0
+        assert out_file.exists()
+        assert "Mocked review output" in out_file.read_text(encoding="utf-8")

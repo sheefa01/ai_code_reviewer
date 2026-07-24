@@ -1,5 +1,8 @@
 import typer
+from pathlib import Path
+from typing import List, Optional
 from rich.console import Console
+from rich.markdown import Markdown
 from src.utils.file_parser import parse_python_files, check_syntax
 
 from src.ai.reviewer import CodeReviewer
@@ -9,7 +12,10 @@ app = typer.Typer(help="AI-Powered Python Code Reviewer")
 console = Console()
 
 @app.command()
-def review(path: str = typer.Argument(..., help="Path to a Python file or directory to review")):
+def review(
+    path: Path = typer.Argument(..., help="Path to a Python file or directory to review"),
+    output: Optional[Path] = typer.Option(None, "--output", "-o", help="Path to save the markdown report")
+):
     """
     Review Python files in the given path using Google Gemini.
     """
@@ -55,7 +61,21 @@ def review(path: str = typer.Argument(..., help="Path to a Python file or direct
         with console.status(f"Generating review for {file.name}..."):
             feedback = reviewer.review_code(content, file.name)
             
-        console.print(feedback)
+        # Print beautifully using Rich Markdown
+        console.print(Markdown(feedback))
+        
+        # Save to output file if flag is provided
+        if output:
+            try:
+                # Append the review to the file
+                with output.open("a", encoding="utf-8") as f:
+                    f.write(f"\n\n# Review for {file.name}\n\n")
+                    f.write(feedback)
+            except Exception as e:
+                console.print(f"[bold red]Failed to write to {output}:[/bold red] {e}")
+
+    if output:
+        console.print(f"\n[bold green]Report successfully saved to {output}[/bold green]")
 
 if __name__ == "__main__":
     app()
